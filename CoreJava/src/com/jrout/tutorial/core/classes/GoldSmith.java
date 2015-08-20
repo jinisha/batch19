@@ -31,10 +31,10 @@ public class GoldSmith {
 		
 		System.out.println(gold == yellow);
 		
-		/*System.out.println(gold.color);
+		/*
+		System.out.println(gold.color);
 		gold.color = "Red";
 		System.out.println(gold.color);*/
-		
 //		System.out.println(yellow.color);
 		
 		String name1 = new String("Rohit");
