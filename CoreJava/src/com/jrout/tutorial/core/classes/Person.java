@@ -49,7 +49,7 @@ public class Person {
 	}
 	public void printDetails(){
 		System.out.println(name +" " + age +" "+ occupation);
-		callMe();
+//		callMe();
 	}
 	
 	public void callMe(){
