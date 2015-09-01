@@ -1,6 +1,7 @@
 package com.jrout.tutorial.core.staticexample;
 
 public class TeacherClient {
+	
 	public static void main(String arg[]) {
 //		MathUtil mu = new MathUtil();
 //		int val = mu.add(2, 4);
