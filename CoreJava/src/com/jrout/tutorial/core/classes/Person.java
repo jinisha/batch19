@@ -1,7 +1,7 @@
 package com.jrout.tutorial.core.classes;
 
 public class Person {
-	private String name;
+	private final String name;
 	private int age;
 	private String occupation;
 	private Address address;
@@ -39,7 +39,7 @@ public class Person {
 	}
 	
 	public void setName(String name) {
-		this.name = name;
+//		this.name = name;
 	}
 	public void setOccupation(String occX) {
 		this.occupation = occX;

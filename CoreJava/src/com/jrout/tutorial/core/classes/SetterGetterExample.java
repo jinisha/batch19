@@ -6,7 +6,7 @@ public class SetterGetterExample {
 		Person per = new Person("Test",23);
 		
 		per.setAge(70); // per.age = -10;
-		per.setName("Ramesh"); //per.name = "Ramesh";
+//		per.setName("Ramesh"); //per.name = "Ramesh";
 		per.setOccupation("Student");//per.occupation = "Student";
 		
 		System.out.println(per.getAge());
@@ -28,7 +28,7 @@ public class SetterGetterExample {
 		
 		Person raj = new Person("Test",45);
 		raj.setAge(30);
-		raj.setName("Raj");
+//		raj.setName("Raj");
 		raj.setOccupation("Student");
 		
 		Address rajAdd = new Address();

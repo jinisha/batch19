@@ -44,7 +44,7 @@ public class ObjectReferenceExample {
 	public static void printPerson(Person per) {
 		System.out.println("Before "+ per.getName());
 		per.printDetails();
-		per.setName("JayramRout");
+//		per.setName("JayramRout");
 		
 		System.out.println("AFter "+ per.getName());
 	}
