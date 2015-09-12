@@ -12,5 +12,4 @@ public class NonITEmployee extends Employee {
 	public void setTypingExp(int typingExp) {
 		this.typingExp = typingExp;
 	}
-
 }
