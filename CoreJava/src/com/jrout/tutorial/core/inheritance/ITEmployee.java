@@ -28,7 +28,7 @@ public class ITEmployee extends Employee {
 		System.out.println(super.getEmpId());
 	}
 	public void callITMethod(String string){
-		System.out.println(super.getEmpId());
+		System.out.println(super.getEmpId() +"");
 	}
 	
 	@Override
