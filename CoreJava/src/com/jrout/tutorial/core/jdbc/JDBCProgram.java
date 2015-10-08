@@ -16,30 +16,44 @@ public class JDBCProgram {
     static Statement stmt = null;
     static PreparedStatement pstmt = null;
     CallableStatement cs = null;
-    ResultSet rs = null;
-
-	public static void main(String[] args) {
+    static ResultSet rs = null;
+    static {
 		String oracleDriver = "oracle.jdbc.driver.OracleDriver";
-		Connection con = null;
-		Statement stmt = null;
-		ResultSet rs = null;
 		try {
 			Class.forName(oracleDriver);
-			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		
+		try {
+			con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE","HR","HR");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+}
+	public static void main(String[] args) {
+		
+//		selectQuery(101);
+//		preparedStatement(106);
+		JDBCProgram prog = new JDBCProgram();
+//		prog.addBatch();
+//		prog.savePoint();
+		prog.callProcedure();
+	}
+	
+	public static void selectQuery(int empId) {
+		
+		
 		/*Driver myDriver = new oracle.jdbc.driver.OracleDriver(); 	
 		DriverManager.registerDriver( myDriver );*/
 		try {
-			con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/XE","HR","HR");
+			
 			stmt = con.createStatement();
-			rs = stmt.executeQuery("select * from employees");
+			rs = stmt.executeQuery("select * from employees where employee_id ="+ empId);
 			
 			List empList = null;
 			while(rs.next()) {
-				System.out.println(rs.getString(2) +" " + rs.getString("last_name") +" " + rs.getString("JOB_title"));
+				System.out.println(rs.getString(2));
 			}
 			
 		} catch (SQLException e) {
@@ -53,16 +67,14 @@ public class JDBCProgram {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
-	
-	public void preparedStatement(int empid, String name) {
+	public static void preparedStatement(int empid) {
         try {
             pstmt = con
-                    .prepareStatement("select * from employees where employee_id = ? and first_name = ?");
+                    .prepareStatement("select * from employees where employee_id = ?");
             pstmt.setInt(1, empid);
-            pstmt.setString(2, name);
+            //pstmt.setString(2, name);
 
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -84,17 +96,21 @@ public class JDBCProgram {
             con.setAutoCommit(false);
             Statement stmt = con.createStatement();
 
-            String SQL = "INSERT INTO H2KTable " + "VALUES (107, 'Rita')";
+            String SQL = "INSERT INTO H2KTable " + "VALUES (117, 'Rita')";
             stmt.addBatch(SQL);
 
-            String SQL2 = "INSERT INTO H2KTable " + "VALUES (105, 'Rita')";
+            String SQL2 = "INSERT INTO H2KTable " + "VALUES (115, 'Rita')";
             stmt.addBatch(SQL2);
 
-            String SQL3 = "update H2KTable set name ='RAJA' where id = 102";
+            String SQL3 = "update H2KTable set name ='RAJA' where id = 105";
             stmt.addBatch(SQL3);
 
             int[] intArray = stmt.executeBatch();
+            for(int in : intArray) {
+            	System.out.println(in);
+            }
             con.commit();
+            System.out.println("success");
         } catch (SQLException se) {
             try {
                 con.rollback();
@@ -119,7 +135,7 @@ public class JDBCProgram {
             Statement stmt = con.createStatement(); // set a Savepoint
 
             savepoint1 = con.setSavepoint("Savepoint1");
-            String SQL = "INSERT INTO H2KTable VALUES (102, 'Rita2')";
+            String SQL = "INSERT INTO H2KTable VALUES (120, 'Rita2')";
 
             stmt.executeUpdate(SQL); // Submit a malformed SQL statement that
             // breaks String SQL =
@@ -130,7 +146,7 @@ public class JDBCProgram {
             // conn.commit();
 
             savepoint2 = con.setSavepoint("Savepoint2");
-            String SQL2 = "INSERT INTO H2KTable " + "VALUES (103, 'Rita3')";
+            String SQL2 = "INSERT INTO H2KTable " + "VALUES (121, 'Rita3')";
 
             stmt.executeUpdate(SQL2);
 
@@ -213,7 +229,7 @@ public class JDBCProgram {
     /**
      * API to close all open connections.
      */
-    private void closeConnections(ResultSet rs, Statement stmt, Connection con) {
+    private static void closeConnections(ResultSet rs, Statement stmt, Connection con) {
         try {
             if (rs != null) {
                 rs.close();
@@ -230,13 +246,14 @@ public class JDBCProgram {
     }
 
     /**
+     * create or replace PROCEDURE SHOW_EMPLOYEES ( EID_IN IN NUMBER , EMP_NAME OUT VARCHAR2) AS BEGIN SELECT EMP.FIRST_NAME INTO EMP_NAME FROM EMPLOYEES EMP WHERE EMP.EMPLOYEE_ID = EID_IN; END;
      * API for invoking procedure
      */
     public void callProcedure() {
         try {
             cs = con.prepareCall("{call SHOW_EMPLOYEES(?,?)}");
 
-            cs.setInt(1, 200);
+            cs.setInt(1, 102);
             cs.registerOutParameter(2, Types.VARCHAR);
 
             cs.executeQuery();
